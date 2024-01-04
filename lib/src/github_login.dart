@@ -67,6 +67,8 @@ class _GithubLoginState extends State<GithubLoginWidget> {
           'githubClientId and githubClientSecret must be not empty. '
           'See `lib/github_oauth_credentials.dart` for more detail.');
     }
+    print('_getOAuth2Client: enter');
+
     var grant = oauth2.AuthorizationCodeGrant(
       widget.githubClientId,
       _authorizationEndpoint,
@@ -77,25 +79,50 @@ class _GithubLoginState extends State<GithubLoginWidget> {
     var authorizationUrl =
         grant.getAuthorizationUrl(redirectUrl, scopes: widget.githubScopes);
 
+    print('_getOAuth2Client: authorizationUrl: $authorizationUrl');
+
     await _redirect(authorizationUrl);
+
+    print('_getOAuth2Client: after _redirect');
+
     var responseQueryParameters = await _listen();
+
+    print('_getOAuth2Client: after _listen. responseQueryParameters: '
+        '$responseQueryParameters');
+
     var client =
         await grant.handleAuthorizationResponse(responseQueryParameters);
+
+    print('_getOAuth2Client: after handleAuthorizationResponse');
+
     return client;
   }
 
   Future<void> _redirect(Uri authorizationUrl) async {
+    print('_redirect: enter');
+
     var url = authorizationUrl.toString();
     if (await canLaunch(url)) {
+      print('_redirect: will launch() url: $url');
+
       await launch(url);
+
+      print('_redirect: after launch() url: $url');
     } else {
       throw GithubLoginException('Could not launch $url');
     }
   }
 
   Future<Map<String, String>> _listen() async {
+    print('_listen: enter');
     var request = await _redirectServer!.first;
+
+    print('_listen: after _redirectServer!.first');
+
     var params = request.uri.queryParameters;
+
+    print('_listen: params = $params');
+
     request.response.statusCode = 200;
     request.response.headers.set('content-type', 'text/plain');
     request.response.writeln('Authenticated! You can close this tab.');

@@ -38,6 +38,7 @@ dependencies:
   http: ^1.1.2
   oauth2: ^2.0.2
   url_launcher: ^6.2.2
+  github: ^9.22.0
 
 dev_dependencies:
   flutter_test:
