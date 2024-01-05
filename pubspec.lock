@@ -317,6 +317,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  window_to_front:
+    dependency: "direct main"
+    description:
+      path: "../window_to_front"
+      relative: true
+    source: path
+    version: "0.0.1"
 sdks:
   dart: ">=3.2.3 <4.0.0"
   flutter: ">=3.16.0"
